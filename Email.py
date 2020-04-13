@@ -5,7 +5,9 @@ import time
 import logging
 import json
 
-def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):   
+
+def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):
+    """ Sends an email with the described parameters"""
     logging.info('Sending Message')
 
     msg = EmailMessage()
@@ -13,7 +15,7 @@ def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):
     msg['Subject'] = msg_subject
     msg['From'] = msg_mail_from
     msg['To'] = msg_mail_to
-    
+
     # Send the message via our own SMTP server.
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
@@ -23,9 +25,9 @@ def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):
     pwd = credentials[0]['pass']
     username = credentials[0]['username']
 
-    # Authentication 
+    # Authentication
     try:
-        s.login(username, pwd)  
+        s.login(username, pwd)
         s.send_message(msg)
     except Exception as e:  # skipcq: PYL-W0703
         logging.error(e)
@@ -38,11 +40,11 @@ if __name__ == '__main__':
 
     logging.basicConfig(format='%(asctime)s: %(message)s', level=logging.INFO,
                         datefmt='%H:%M:%S')
-    
+
     with open('include/credentials.json', 'r') as f:
         email_address = json.load(f)
-    
+
     content = 'Test E-Mail from Module'
     subject = 'E-Mail Module Test'
     mail_from = 'Module Test'
-    send_email(content,subject, mail_from, email_address[1]['email'])
+    send_email(content, subject, mail_from, email_address[1]['email'])
