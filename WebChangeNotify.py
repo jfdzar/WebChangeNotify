@@ -1,8 +1,8 @@
-from urllib.request import urlopen
 from unidecode import unidecode
 from bs4 import BeautifulSoup
 from collections import defaultdict
 
+import urllib.request
 import re
 import time
 import logging
@@ -25,7 +25,7 @@ _nopunctuation = str.maketrans('()[]-&:;./-.', '            ',
                                 '\'`´!"#$%*+,<=>?@\\^_`{|}~')
 
 def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
-    # Return cosine similarity between text1 and text2
+    """ Return cosine similarity between text1 and text2 """
 
     tok1 = tok2 = None
     if cache:
@@ -63,6 +63,8 @@ def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
     return np.dot(v1, v2) / (math.sqrt(np.dot(v1, v1)) * math.sqrt(np.dot(v2, v2)))
 
 def get_tokens(text, stopwords=None, enders=None):
+    """ Get the Tokents of a text"""
+
     text = text.translate(_nopunctuation)
     text = unidecode(text)
     text = text.lower()
@@ -76,6 +78,8 @@ def get_tokens(text, stopwords=None, enders=None):
     return sorted(tokens)
 
 def phonenumber_equal(a, b):
+    """ Equal to phone number check ?"""
+
     a = _phone_regex.sub('', a)
     b = _phone_regex.sub('', b)
     if len(a) > 8 or len(b) > 8 and a == b:  # Only if at least they hav 9 digits
@@ -83,6 +87,11 @@ def phonenumber_equal(a, b):
     return False
 
 def CheckWebisteStatus():
+    """
+    Check if the status of the webiste has changed with
+    With a comparation of the cosine similarity of the text
+    """
+
     with open('include/website.json', 'r') as f:
         website = json.load(f)
     with open('include/web.txt', 'r') as f:
@@ -90,13 +99,12 @@ def CheckWebisteStatus():
     
     url = website[0]['url']
     # Validate URL before opening it
-
     if url.lower().startswith('http'):
-        html = urlopen(url)
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req) as resp:  # skipcq: BAN-B310
+            html_soup = BeautifulSoup(resp, 'html.parser')
     else:
         raise ValueError from None
-    
-    html_soup = BeautifulSoup(html, 'html.parser')
 
     ##########
     # To be done - Create Function to extract main part of website with parameters
@@ -118,7 +126,7 @@ def CheckWebisteStatus():
             res_subject = website[0]['subject']
             res_from = website[0]['email_from']
             res_to = website[0]['email']
-        except Exception as e:
+        except Exception as e:  # skipcq: PYL-W0703
             logging.error('Error Assigning Variables \n %s',e)
         
         try:
@@ -126,7 +134,7 @@ def CheckWebisteStatus():
                                     args=(res_msg,res_subject,res_from,res_to,))
             res_email_thread.start()
             res_email_thread.join()
-        except Exception as e:
+        except Exception as e:  # skipcq: PYL-W0703 
             logging.error('Error Starting the Thread \n %s',e)
             logging.error(e)
 
