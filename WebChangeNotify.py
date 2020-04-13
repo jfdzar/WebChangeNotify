@@ -134,9 +134,9 @@ def CheckWebisteStatus():
             logging.error('Error Assigning Variables \n %s', e)
 
         try:
+            mail_args = (res_msg, res_subject, res_from, res_to, )
             res_email_thread = threading.Thread(target=Email.send_email,
-                                                args=(res_msg, res_subject, 
-                                                res_from, res_to, ))
+                                                args=mail_args)
             res_email_thread.start()
             res_email_thread.join()
         except Exception as e:  # skipcq: PYL-W0703
