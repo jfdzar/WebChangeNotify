@@ -101,11 +101,12 @@ def CheckWebisteStatus():
     # Validate URL before opening it
     if url.lower().startswith('http'):
         req = urllib.request.Request(url)
+        with urllib.request.urlopen(req) as resp:
+            html_soup = BeautifulSoup(resp, 'html.parser')
     else:
         raise ValueError from None
 
-    with urllib.request.urlopen(req) as resp:
-        html_soup = BeautifulSoup(resp, 'html.parser')
+    
 
     ##########
     # To be done - Create Function to extract main part of website with parameters
