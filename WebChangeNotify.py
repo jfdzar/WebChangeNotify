@@ -23,7 +23,8 @@ import Email
 _tokens_cache = defaultdict(lambda: None)
 _phone_regex = re.compile(r'[^\d]|^0+')
 # last is a subset from string.punctuation
-_nopunctuation = str.maketrans('()[]-&:;./-.', '            ', '\'`´!"#$%*+,<=>?@\\^_`{|}~')
+_nopunctuation = str.maketrans('()[]-&:;./-.', '            ', 
+                                '\'`´!"#$%*+,<=>?@\\^_`{|}~')
 
 def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
     # Return cosine similarity between text1 and text2
@@ -59,14 +60,16 @@ def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
         if w in tok2:
             v2[i] = 1
     # This the cosine = v1 DOT v2 / (norm-2(v1) * norm-2(v2))
-    # equivalent but +2x faster than np.dot(v1, v2) / (np.linalg.norm(v1) *  np.linalg.norm(v2))
+    # equivalent but +2x faster than 
+    # np.dot(v1, v2) / (np.linalg.norm(v1) *  np.linalg.norm(v2))
     return np.dot(v1, v2) / (math.sqrt(np.dot(v1, v1)) * math.sqrt(np.dot(v2, v2)))
 
 def get_tokens(text, stopwords=None, enders=None):
     text = text.translate(_nopunctuation)
     text = unidecode(text)
     text = text.lower()
-    tokens = [inflection.singularize(w) for w in text.split() if len(w) > 1 and (not stopwords or w not in stopwords)]
+    tokens = [inflection.singularize(w) for w in text.split() 
+                if len(w) > 1 and (not stopwords or w not in stopwords)]
     if enders:
         for i, w in enumerate(tokens):
             if w in enders:
@@ -93,9 +96,10 @@ def CheckWebisteStatus():
     html_soup = BeautifulSoup(html, 'html.parser')
 
     ##########
-    #To be done - Create Function to extract main part of website with parameters
-    post_body_section = html_soup.findAll(attrs={'class' : 'post-entry post-entry-type-page post-entry-91'})[1]
-    text = post_body_section.findAll(attrs={'class' : 'av_textblock_section'})[0]
+    # To be done - Create Function to extract main part of website with parameters
+    attributes = {'class':'post-entry post-entry-type-page post-entry-91'}
+    post_body_section = html_soup.findAll(attrs=attributes)[1]
+    text = post_body_section.findAll(attrs={'class': 'av_textblock_section'})[0]
     text = str(text)
     ##########
 
@@ -108,15 +112,19 @@ def CheckWebisteStatus():
         try:
             res_msg = website[0]["email_msg"]
             res_msg = res_msg + text
-
             res_subject = website[0]['subject']
             res_from = website[0]['email_from']
             res_to = website[0]['email']
-
-            res_email_thread = threading.Thread(target=Email.send_email, args=(res_msg,res_subject,res_from,res_to,))
+        except Exception as e:
+            logging.error('Error Assigning Variables \n %s',e)
+        
+        try:
+            res_email_thread = threading.Thread(target=Email.send_email, 
+                                    args=(res_msg,res_subject,res_from,res_to,))
             res_email_thread.start()
             res_email_thread.join()
         except Exception as e:
+            logging.error('Error Starting the Thread \n %s',e)
             logging.error(e)
 
 
@@ -126,7 +134,7 @@ if __name__ == '__main__':
                         datefmt='%H:%M:%S')
 
     while(1):
-        #Start a loop to check the Status of the Webiste 
+        # Start a loop to check the Status of the Webiste 
         logging.info('Checking Webiste')
         CheckWebisteStatus()
         logging.info('Going to sleep')

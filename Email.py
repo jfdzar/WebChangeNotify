@@ -5,30 +5,23 @@ import time
 import logging
 import json
 
-def send_email(content, subject, mail_from, mail_to):   
+def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):   
     logging.info('Sending Message')
 
     msg = EmailMessage()
-    msg.set_content(content)
-    msg['Subject'] = subject
-    msg['From'] = mail_from
-    msg['To'] = mail_to
-
-    logging.info('Mail to: %s',mail_to)
-    logging.info('Mail from: %s',mail_from)
-    logging.info('Mail Subject: %s',subject)
+    msg.set_content(msg_content)
+    msg['Subject'] = msg_subject
+    msg['From'] = msg_mail_from
+    msg['To'] = msg_mail_to
     
     # Send the message via our own SMTP server.
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    with open('include/credentials.json', 'r') as f:
-        credentials = json.load(f)
+    with open('include/credentials.json', 'r') as file:
+        credentials = json.load(file)
     
     pwd = credentials[0]['pass']
     username = credentials[0]['username']
-
-    #logging.info('Password: %s',pwd)
-    #logging.info('Username: %s',username)
 
     # Authentication 
     try:
@@ -47,9 +40,9 @@ if __name__ == '__main__':
                         datefmt='%H:%M:%S')
     
     with open('include/credentials.json', 'r') as f:
-        credentials = json.load(f)
+        email_address = json.load(f)
     
     content = 'Test E-Mail from Module'
     subject = 'E-Mail Module Test'
     mail_from = 'Module Test'
-    send_email(content,subject, mail_from, credentials[1]['email'])
+    send_email(content,subject, mail_from, email_address[1]['email'])
