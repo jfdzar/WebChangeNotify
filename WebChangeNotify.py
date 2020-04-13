@@ -3,12 +3,10 @@ from unidecode import unidecode
 from bs4 import BeautifulSoup
 from collections import defaultdict
 
-import pandas as pd
 import re
 import time
 import logging
 import threading
-import sys
 import inflection
 import numpy as np
 import math
