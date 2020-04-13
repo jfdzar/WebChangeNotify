@@ -35,8 +35,8 @@ def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):
 
 
 if __name__ == '__main__':
-    format = '%(asctime)s: %(message)s'
-    logging.basicConfig(format=format, level=logging.INFO,
+
+    logging.basicConfig(format='%(asctime)s: %(message)s', level=logging.INFO,
                         datefmt='%H:%M:%S')
     
     with open('include/credentials.json', 'r') as f:
