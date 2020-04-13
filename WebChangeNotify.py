@@ -89,8 +89,13 @@ def CheckWebisteStatus():
         web_text = f.read()
     
     url = website[0]['url']
+    # Validate URL before opening it
 
-    html = urlopen(url)
+    if url.lower().startswith('http'):
+        html = urlopen(url)
+    else:
+        raise ValueError from None
+    
     html_soup = BeautifulSoup(html, 'html.parser')
 
     ##########
