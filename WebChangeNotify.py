@@ -87,8 +87,8 @@ def phonenumber_equal(a, b):
     return False
 
 def CheckWebisteStatus():
-    """ 
-    Check if the status of the webiste has changed with 
+    """
+    Check if the status of the webiste has changed with
     With a comparation of the cosine similarity of the text
     """
 
@@ -105,8 +105,6 @@ def CheckWebisteStatus():
             html_soup = BeautifulSoup(resp, 'html.parser')
     else:
         raise ValueError from None
-
-    
 
     ##########
     # To be done - Create Function to extract main part of website with parameters
