@@ -22,7 +22,7 @@ _tokens_cache = defaultdict(lambda: None)
 _phone_regex = re.compile(r'[^\d]|^0+')
 # last is a subset from string.punctuation
 _nopunctuation = str.maketrans('()[]-&:;./-.', '            ',    
-                            '\'`´!"#$%*+,<=>?@\\^_`{|}~')
+                                '\'`´!"#$%*+,<=>?@\\^_`{|}~')
 
 
 def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
@@ -71,7 +71,7 @@ def get_tokens(text, stopwords=None, enders=None):
     text = unidecode(text)
     text = text.lower()
     tokens = [inflection.singularize(w) for w in text.split()
-            if len(w) > 1 and (not stopwords or w not in stopwords)]
+                if len(w) > 1 and (not stopwords or w not in stopwords)]
     if enders:
         for i, w in enumerate(tokens):
             if w in enders:
@@ -135,7 +135,8 @@ def CheckWebisteStatus():
 
         try:
             res_email_thread = threading.Thread(target=Email.send_email,
-                                                args=(res_msg, res_subject, res_from, res_to, ))
+                                                args=(res_msg, res_subject, 
+                                                res_from, res_to, ))
             res_email_thread.start()
             res_email_thread.join()
         except Exception as e:  # skipcq: PYL-W0703
