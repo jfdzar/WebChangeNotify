@@ -32,11 +32,11 @@ def cosine_similarity(text1, text2, cache=False, stopwords=None, enders=None):
         tok2 = _tokens_cache[text2]
 
     if tok1 is None:
-        tok1 = get_tokens(text1)
+        tok1 = get_tokens(text1,stopwords=stopwords,enders=enders)
         if cache:
             _tokens_cache[text1] = tok1
     if tok2 is None:
-        tok2 = get_tokens(text2)
+        tok2 = get_tokens(text2,stopwords=stopwords,enders=enders)
         if cache:
             _tokens_cache[text2] = tok2
 
