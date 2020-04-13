@@ -101,7 +101,7 @@ def CheckWebisteStatus():
     # Validate URL before opening it
     if url.lower().startswith('http'):
         req = urllib.request.Request(url)
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req) as resp:  # skipcq: BAN-B310
             html_soup = BeautifulSoup(resp, 'html.parser')
     else:
         raise ValueError from None
@@ -126,7 +126,7 @@ def CheckWebisteStatus():
             res_subject = website[0]['subject']
             res_from = website[0]['email_from']
             res_to = website[0]['email']
-        except Exception as e: # skipcq: PYL-W0703
+        except Exception as e:  # skipcq: PYL-W0703
             logging.error('Error Assigning Variables \n %s',e)
         
         try:
@@ -134,7 +134,7 @@ def CheckWebisteStatus():
                                     args=(res_msg,res_subject,res_from,res_to,))
             res_email_thread.start()
             res_email_thread.join()
-        except Exception as e: # skipcq: PYL-W0703
+        except Exception as e:  # skipcq: PYL-W0703 
             logging.error('Error Starting the Thread \n %s',e)
             logging.error(e)
 
