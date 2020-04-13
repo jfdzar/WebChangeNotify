@@ -126,7 +126,7 @@ def CheckWebisteStatus():
             res_subject = website[0]['subject']
             res_from = website[0]['email_from']
             res_to = website[0]['email']
-        except Exception as e:
+        except Exception as e: # skipcq: PYL-W0703
             logging.error('Error Assigning Variables \n %s',e)
         
         try:
@@ -134,7 +134,7 @@ def CheckWebisteStatus():
                                     args=(res_msg,res_subject,res_from,res_to,))
             res_email_thread.start()
             res_email_thread.join()
-        except Exception as e:
+        except Exception as e: # skipcq: PYL-W0703
             logging.error('Error Starting the Thread \n %s',e)
             logging.error(e)
 

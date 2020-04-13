@@ -27,7 +27,7 @@ def send_email(msg_content, msg_subject, msg_mail_from, msg_mail_to):
     try:
         s.login(username, pwd)  
         s.send_message(msg)
-    except Exception as e:
+    except Exception as e: # skipcq: PYL-W0703
         logging.error(e)
     time.sleep(5)
     s.quit()
