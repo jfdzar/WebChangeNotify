@@ -127,8 +127,8 @@ def CheckWebisteStatus():
 
 
 if __name__ == '__main__':
-    format = '%(asctime)s: %(message)s'
-    logging.basicConfig(format=format, level=logging.INFO,
+    
+    logging.basicConfig(format='%(asctime)s: %(message)s', level=logging.INFO,
                         datefmt='%H:%M:%S')
 
     while(1):
