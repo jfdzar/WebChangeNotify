@@ -157,4 +157,5 @@ if __name__ == '__main__':
         time.sleep(43200)
 
     logging.info('Exiting Loop')
+    # deepcode ignore replace~exit~sys.exit: <please specify a reason of ignoring this>
     exit()
